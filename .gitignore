@@ -49,3 +49,7 @@ logs/
 
 # Scratch directory for practice
 scratch
+
+# Intermediate directories 
+data/sra_prefetch
+kmc_temp

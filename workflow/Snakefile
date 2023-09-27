@@ -3,7 +3,8 @@
 rule all:
     input:
         "results/snakemake_dag.png",
-        "data/all_kmer_counts.csv"
+        "data/all_kmer_counts.csv",
+        "results/modeling/xgboost_gridsearch.pkl"
 
 
 ####### Meta rules #######
@@ -21,3 +22,4 @@ rule generate_snakemake_dag:
 ####### Modules #######
 include: "rules/get_data.smk"
 include: "rules/feature_engineering.smk"
+include: "rules/modeling.smk"

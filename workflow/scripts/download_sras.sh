@@ -1,22 +1,24 @@
 #!/bin/bash
 # ---------------------------
-# Download FASTQ files from SRA record numbers using SRA toolkit
+# Prefetch FASTQ files from SRA record numbers using SRA toolkit
 # Author: Paul Villanueva (github.com/pommevilla)
 # ---------------------------
 
 helpFunction()
 {
    echo ""
-   echo "Usage: $0 -i sras"
-   echo -e "\t-i List of SRAs to download, each on a newline"
-   exit 1 # Exit script after printing help
+   echo "Usage: $0 -i sras (-n num_records)"
+   echo -e "\t-i List of SRAs to dump, each on a newline"
+   echo -e "\t-n Number of records to fetch (default: 2)"
+   exit 1 
 }
 
-while getopts "i:" opt
+while getopts "i:n:" opt
 do
    case "$opt" in
       i ) sras_to_download="$OPTARG" ;;
-      ? ) helpFunction ;; # Print helpFunction in case parameter is non-existent
+      n ) num_records="$OPTARG" ;;
+      ? ) helpFunction ;; 
    esac
 done
 
@@ -31,30 +33,17 @@ if [ ! -f "$sras_to_download" ]; then
     helpFunction
 fi
 
-echo "First arg: $sras_to_download"
+if [ -z "$num_records" ] 
+then
+   num_records=2
+fi
 
-# Prefetch
-echo "Prefetching..."
-head -n 2 $sras_to_download | while read -r sra_record
+echo "SRA records file: $sras_to_download"
+echo "Number of records to fetch: $num_records"
+
+# Only fetching the top 5 by default
+head -n $num_records $sras_to_download | while read -r sra_record
 do
    echo "    $sra_record"
-   prefetch $sra_record
+   prefetch $sra_record -O data/sra_prefetch
 done 
-
-# Extract
-echo "Extracting..."
-head -n 2 $sras_to_download | while read -r sra_record
-do
-   echo "    $sra_record"
-   fastq-dump --outdir data/genomes --gzip --skip-technical  --readids --read-filter pass --dumpbase --split-3 --clip $sra_record/$sra_record.sra
-done
-
-# k-mer counting
-echo "Counting k-mers..."
-
-head -n 2 $sras_to_download | while read -r sra_record
-do
-   echo "    $sra_record"
-   kmc -k10 data/genomes/${sra_record}_pass_1.fastq.gz 10mers kmc_temp
-   kmc_tools transform 10mers dump ${sra_record}_10mers.txt
-done

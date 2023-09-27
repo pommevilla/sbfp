@@ -1,4 +1,3 @@
-#!/bin/bash
 # ---------------------------
 # Rules about feature extraction/engineering
 # Author: Paul Villanueva (github.com/pommevilla)

@@ -1,4 +1,3 @@
-#!/bin/bash
 # ---------------------------
 # Rules to get data from SRA
 # Author: Paul Villanueva (github.com/pommevilla)

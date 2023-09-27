@@ -6,7 +6,7 @@
 rule prefetch_sras:
     input:
         sras_list = "data/sras.txt",
-        sra_fetch_script = "workflow/scripts/download_sras.sh"
+        sra_fetch_script = "workflow/scripts/get_data/download_sras.sh"
     output:
         touch(".sras_fetched")
     log:
@@ -21,7 +21,7 @@ rule dump_fastqs:
     input:
         ".sras_fetched",
         sras_list = "data/sras.txt",
-        sra_dump_script = "workflow/scripts/dump_fastqs.sh",
+        sra_dump_script = "workflow/scripts/get_data/dump_fastqs.sh",
     output:
         touch(".fastqs_dumped")
     log:

@@ -16,34 +16,37 @@ helpFunction()
 while getopts "i:n:" opt
 do
    case "$opt" in
-      i ) sras_to_download="$OPTARG" ;;
+      i ) sras_to_dump="$OPTARG" ;;
       n ) num_records="$OPTARG" ;;
       ? ) helpFunction ;; 
    esac
 done
 
-if [ -z "$sras_to_download" ] 
+if [ -z "$sras_to_dump" ] 
 then
    echo "Some or all of the parameters are empty."
    helpFunction
 fi
 
-if [ ! -f "$sras_to_download" ]; then
-    echo "$sras_to_download does not exist. Are you in the right directory?"
+if [ ! -f "$sras_to_dump" ]; then
+    echo "$sras_to_dump does not exist. Are you in the right directory?"
     helpFunction
 fi
 
 if [ -z "$num_records" ] 
 then
-   num_records=2
+   num_records=5
 fi
 
-echo "SRA records file: $sras_to_download"
+echo "SRA records file: $sras_to_dump"
 echo "Number of records to fetch: $num_records"
 
-# Only fetching the top 5 by default
-head -n $num_records $sras_to_download | while read -r sra_record
+# Extract
+echo "Extracting..."
+head -n $num_records $sras_to_dump | while read -r sra_record
 do
    echo "    $sra_record"
-   prefetch $sra_record -O data/sra_prefetch
-done 
+   fastq-dump --outdir data/genomes/$sra_record --gzip --skip-technical \
+      --readids --read-filter pass --dumpbase --split-3 --clip \
+      data/sra_prefetch/$sra_record/$sra_record.sra
+done

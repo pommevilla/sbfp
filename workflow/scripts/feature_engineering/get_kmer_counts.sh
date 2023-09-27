@@ -35,7 +35,7 @@ fi
 
 if [ -z "$num_records" ] 
 then
-   num_records=2
+   num_records=5
 fi
 
 echo "SRA records file: $sra_records"

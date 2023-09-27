@@ -36,6 +36,9 @@ vignettes/*.pdf
 *.knit.md
 Rplots.pdf
 
+# VSCode files
+.vscode
+
 # R Environment Variables
 .Renviron
 

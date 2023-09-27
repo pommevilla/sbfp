@@ -1,15 +1,16 @@
 #!/bin/bash
 # ---------------------------
-# Clean outputs to prep for new run
+# Clean all outputs and intermediate files to prep for new Snakemake run
 # Author: Paul Villanueva (github.com/pommevilla)
 # ---------------------------
 
-rm *kmc*
-rm data/genomes/*
+rm -rf data/genomes/*
+rm data/kmer_counts/*
+rm data/kmc_temp/*
+rm -rf data/sra_prefetch/*
+rm data/all_kmer_counts.csv
 
-head -n 2 data/sras.txt | while read -r sra_record
-do
-    rm -rf $sra_record
-done
-
-rm *mers.txt
+# Snakemake status files
+rm .fastqs_dumped
+rm .sras_fetched
+rm .kmers_counted

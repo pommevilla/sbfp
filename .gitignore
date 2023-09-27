@@ -44,12 +44,13 @@ Rplots.pdf
 logs/
 
 # Snakemake status outputs
-.hab_prediction_env_restored
 .sras_fetched
+.fastqs_dumped
 
 # Scratch directory for practice
 scratch
 
 # Intermediate directories 
 data/sra_prefetch
+data/genomes
 kmc_temp

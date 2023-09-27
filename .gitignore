@@ -46,6 +46,7 @@ logs/
 # Snakemake status outputs
 .sras_fetched
 .fastqs_dumped
+.kmers_counted
 
 # Scratch directory for practice
 scratch

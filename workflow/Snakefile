@@ -19,3 +19,4 @@ rule generate_snakemake_dag:
 
 ####### Modules #######
 include: "rules/get_data.smk"
+include: "rules/feature_engineering.smk"

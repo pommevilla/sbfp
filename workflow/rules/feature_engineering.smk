@@ -24,7 +24,7 @@ rule concat_kmer_counts:
         ".kmers_counted",
         kmer_concat_script = "workflow/scripts/feature_engineering/concat_kmer_counts.py"
     output:
-        "data/kmer_counts.tsv"
+        "data/all_kmer_counts.csv"
     log:
         err = "logs/concat_kmer_counts.err",
         out = "logs/concat_kmer_counts.out"

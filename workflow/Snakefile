@@ -2,7 +2,8 @@
 ####### Target rules #######
 rule all:
     input:
-        "results/snakemake_dag.png"
+        "results/snakemake_dag.png",
+        "data/all_kmer_counts.csv"
 
 
 ####### Meta rules #######

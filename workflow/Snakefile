@@ -1,0 +1,21 @@
+
+####### Target rules #######
+rule all:
+    input:
+        "results/snakemake_dag.png"
+
+
+####### Meta rules #######
+rule generate_snakemake_dag:
+    input:
+    output:
+        "results/snakemake_dag.png"
+    log:
+        err = "logs/snakemake_dag.err",
+        out = "logs/snakemake_dag.out"
+    shell:
+        "snakemake --dag | dot -Tpng > {output}"
+
+
+####### Modules #######
+include: "rules/get_data.smk"

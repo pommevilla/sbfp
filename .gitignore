@@ -55,3 +55,4 @@ scratch
 data/sra_prefetch
 data/genomes
 kmc_temp
+data/kmer_counts

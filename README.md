@@ -20,3 +20,5 @@
 - [ ] Update XGBoost version to avoid deprecation warnings
     - See: https://github.com/dmlc/xgboost/issues/9543
 - [ ] Switch to yml files for conda environments
+- [ ] Phylogenetic tree building
+- [ ] Containerization

@@ -15,6 +15,7 @@ if __name__ == "__main__":
 
     # Read in the kmer count table with just the first 100 columns for now
     kmer_counts = pd.read_csv("data/all_kmer_counts.csv", index_col=0)
+
     kmer_counts = kmer_counts.iloc[:, :100]
 
     # Adding a random column to serve as a prediction target

@@ -59,3 +59,4 @@ data/sra_prefetch
 data/genomes
 kmc_temp
 data/kmer_counts
+results/feature_engineering/kmer_counts

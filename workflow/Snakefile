@@ -6,6 +6,7 @@ rule all:
         "results/snakemake_dag.png",
         "data/all_kmer_counts.csv",
         expand("results/feature_engineering/kmer_counts/{genome_name}_5mers.txt", genome_name=genome_names),
+        "data/merged_data.csv"
         # "results/modeling/xgboost_gridsearch.pkl"
 
 
@@ -18,9 +19,10 @@ rule generate_snakemake_dag:
         err = "logs/snakemake_dag.err",
         out = "logs/snakemake_dag.out"
     shell:
-        "snakemake --dag | dot -Tpng > {output}"
+        "snakemake --rulegraph | dot -Tpng > {output}"
 
 
+# Just a rule for testing out the config file
 rule config_values:
     output:
         "tester.txt"
@@ -35,9 +37,6 @@ rule config_values:
         with open(f"{params.kmc_temp_dir}/something", 'w') as fout:
             for i, genome_name in enumerate(genome_names):
                 fout.write(f"{i + 1}\t{genome_name}\n")
-
-
-        
 
 ####### Modules #######
 include: "rules/feature_engineering.smk"

@@ -21,8 +21,8 @@ def pivot_and_rename_kmer_counts(kmer_count_file: str):
         names=["kmer", "count"],
         nrows=500
     )
-    df['accession'] = sra_accession
-    df = df.pivot(index="accession", columns="kmer", values="count")
+    df['genome'] = sra_accession
+    df = df.pivot(index="genome", columns="kmer", values="count")
 
     return df
 

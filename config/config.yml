@@ -1,3 +1,16 @@
+phenotype:
+  # csv file containing genome names and any corresponding phenotypes
+  # the first column should be named genome and the values here
+  # should match the file names of the fasta files the pipeline is being
+  # run on 
+  phenotype_file: data/phenotypes.csv
+
+  # Column from the above file that the prediction pipeline should be run on
+  target_column: group
+
+  # Every other value will be considered a feature
+
+
 data_prep:
   # Directory containing the genome files of interest
   genome_directory: scratch/genomes

@@ -3,6 +3,7 @@
 # Author: Paul Villanueva (github.com/pommevilla)
 # ---------------------------
 
+# Generates kmer count files for individual genomes
 rule count_kmers:
     output:
         "results/feature_engineering/kmer_counts/{genome_name}_5mers.txt"
@@ -20,6 +21,7 @@ rule count_kmers:
         kmc_tools transform data/kmc_temp/15mers_{wildcards.genome_name} dump results/feature_engineering/kmer_counts/{wildcards.genome_name}_5mers.txt
         """
         
+# Concatenates all the kmer count files generated above
 rule concat_kmer_counts:
     input:
         input_kmer_count_files=expand("results/feature_engineering/kmer_counts/{genome_name}_5mers.txt", genome_name=genome_names),
@@ -35,3 +37,20 @@ rule concat_kmer_counts:
         "../envs/data_prep.yml"
     script:
         "../scripts/feature_engineering/concat_kmer_counts.py"
+
+# Combines kmer count information with phenotypic data
+rule combine_data_sets:
+    input:
+        all_kmer_counts="data/all_kmer_counts.csv",
+        phenotypic_data=config['phenotype']['phenotype_file']
+    params:
+        target_column=config['phenotype']['target_column'],
+    output:
+        merged_data="data/merged_data.csv"
+    log:
+        err="logs/combine_data_sets.err",
+        out="logs/combine_data_sets.out"
+    conda:
+        "../envs/data_prep.yml"
+    script:
+        "../scripts/feature_engineering/combine_datasets.py"

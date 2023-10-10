@@ -58,5 +58,10 @@ scratch
 data/sra_prefetch
 data/genomes
 kmc_temp
-data/kmer_counts
+data/
 results/feature_engineering/kmer_counts
+
+# Rule outputs
+data/all_kmer_counts.csv
+data/merged_data.csv
+

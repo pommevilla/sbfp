@@ -1,5 +1,4 @@
 
-
 configfile: "config/config.yml"
 import glob
 import os

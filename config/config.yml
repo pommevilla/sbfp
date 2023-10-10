@@ -3,7 +3,7 @@ phenotype:
   # the first column should be named genome and the values here
   # should match the file names of the fasta files the pipeline is being
   # run on 
-  phenotype_file: data/phenotypes.csv
+  phenotype_file: scratch/phenotypes.csv
 
   # Column from the above file that the prediction pipeline should be run on
   target_column: group

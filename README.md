@@ -4,17 +4,22 @@
 
 ![](results/snakemake_dag.png)
 
+## Running the pipeline
+
+* Edit the config file in the indicated places
+* Install `snakemake`. A bare conda/mamba environment is recommended (ie., created with `mamba craete -c conda-forge -c bioconda -n snakemake snakemake`)
+* Run the pipeline with `snakemake --use-conda -c`
+
+
+
 ## To Dos
 
 - [ ] Parameterize k for k-mer counting
 - [ ] Add AA k-mer counting
 - [ ] Feature selection
 - [ ] Configure for slurm
-- [ ] Set up config file
-- [ ] Take off testing parameters for:
-    - [ ] Number of k-mers used in the final k-mer count table (currently using 500)
 - [ ] Update XGBoost version to avoid deprecation warnings
     - See: https://github.com/dmlc/xgboost/issues/9543
-- [ ] Switch to yml files for conda environments
 - [ ] Phylogenetic tree building
 - [ ] Containerization
+- [ ] More instrutions on running the pipeline

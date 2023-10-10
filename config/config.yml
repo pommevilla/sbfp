@@ -1,18 +1,11 @@
-# Where to download the SRA files 
-# sra_download_directory
-
-# Where intermediate kmc files should g
-# kmc_temp_files
+data_prep:
+  # Directory containing the genome files of interest
+  genome_directory: scratch/genomes
+  # Where intermediate kmc files should g
+  kmc_temp_dir: data/kmc_temp
 
 # Length of nucleotide k-mers
 # nucl_kmer_length
 
 # Length of AA k-mers
 # aa_kmer_length
-
-# File containing SRAs to download
-# sra_list
-
-# How many SRAs of the total list to download?
-# If left blank, will download all of them.
-# num_sras_to_download

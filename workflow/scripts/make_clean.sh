@@ -4,13 +4,8 @@
 # Author: Paul Villanueva (github.com/pommevilla)
 # ---------------------------
 
-rm -rf data/genomes/*
-rm data/kmer_counts/*
-rm data/kmc_temp/*
-rm -rf data/sra_prefetch/*
-rm data/all_kmer_counts.csv
+rm -rf logs
+rm -rf results/feature_engineering/kmer_counts/*
+rm results/snakemake_dag.png
 
 # Snakemake status files
-rm .fastqs_dumped
-rm .sras_fetched
-rm .kmers_counted

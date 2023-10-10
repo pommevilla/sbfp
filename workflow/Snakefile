@@ -1,10 +1,12 @@
+include: "rules/common.smk"
 
 ####### Target rules #######
 rule all:
     input:
         "results/snakemake_dag.png",
         "data/all_kmer_counts.csv",
-        "results/modeling/xgboost_gridsearch.pkl"
+        expand("results/feature_engineering/kmer_counts/{genome_name}_5mers.txt", genome_name=genome_names),
+        # "results/modeling/xgboost_gridsearch.pkl"
 
 
 ####### Meta rules #######
@@ -19,7 +21,24 @@ rule generate_snakemake_dag:
         "snakemake --dag | dot -Tpng > {output}"
 
 
+rule config_values:
+    output:
+        "tester.txt"
+    log:
+        err="logs/count_kmers.err",
+        out="logs/count_kmers.out"
+    params:
+        genome_directory=config["data_prep"]["genome_directory"],
+        kmc_temp_dir=config["data_prep"]["kmc_temp_dir"]
+    run:
+        shell("echo 'Genome directory: {params.genome_directory}' > {output}")
+        with open(f"{params.kmc_temp_dir}/something", 'w') as fout:
+            for i, genome_name in enumerate(genome_names):
+                fout.write(f"{i + 1}\t{genome_name}\n")
+
+
+        
+
 ####### Modules #######
-include: "rules/get_data.smk"
 include: "rules/feature_engineering.smk"
-include: "rules/modeling.smk"
+# include: "rules/modeling.smk"

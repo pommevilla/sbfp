@@ -9,7 +9,7 @@ rule count_kmers:
         "results/feature_engineering/kmer_counts/{genome_name}_5mers.txt"
     input:
     params:
-        genome_directory=config["data_prep"]["genome_directory"],
+        genome_directory=config["directories"]["genome_directory"],
     log:
         err="logs/count_kmers_{genome_name}.err",
         out="logs/count_kmers_{genome_name}.out"

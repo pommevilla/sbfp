@@ -4,45 +4,52 @@
 # ---------------------------
 
 # Generates kmer count files for individual genomes
-rule count_kmers:
+rule count_nucl_kmers:
     output:
-        "results/feature_engineering/kmer_counts/{genome_name}_5mers.txt"
-    input:
+        "results/feature_engineering/kmer_counts/{nucl_kmer_length}mers/{genome_name}_{nucl_kmer_length}mers.txt"
     params:
         genome_directory=config["directories"]["genome_directory"],
+        kmer_length=config["parameters"]["nucl_kmer_length"]
     log:
-        err="logs/count_kmers_{genome_name}.err",
-        out="logs/count_kmers_{genome_name}.out"
+        err="logs/count_nucl_kmers/{genome_name}/count_kmers_{genome_name}_{nucl_kmer_length}.err",
+        out="logs/count_nucl_kmers/{genome_name}/count_kmers_{genome_name}_{nucl_kmer_length}.out"
+    conda:
+        "../envs/kmc.yml"
     shell:
         """
-        echo -e '\tInput {params.genome_directory}/{wildcards.genome_name}'
-        echo -e '\tOutput data/kmc_temp/15mers_{wildcards.genome_name}'
-        kmc -k5 -fm {params.genome_directory}/{wildcards.genome_name} data/kmc_temp/15mers_{wildcards.genome_name} data/kmc_temp
-        kmc_tools transform data/kmc_temp/15mers_{wildcards.genome_name} dump results/feature_engineering/kmer_counts/{wildcards.genome_name}_5mers.txt
+        kmc -k{params.kmer_length} -fm {params.genome_directory}/{wildcards.genome_name} \
+            data/kmc_temp/{params.kmer_length}mers_{wildcards.genome_name} \
+            data/kmc_temp 1> {log.out} 2> {log.err}
+        kmc_tools transform data/kmc_temp/{params.kmer_length}mers_{wildcards.genome_name} \
+            dump results/feature_engineering/kmer_counts/{params.kmer_length}mers/{wildcards.genome_name}_{params.kmer_length}mers.txt \
+            1> {log.out} 2> {log.err}
         """
         
 # Concatenates all the kmer count files generated above
 rule concat_kmer_counts:
     input:
-        input_kmer_count_files=expand("results/feature_engineering/kmer_counts/{genome_name}_5mers.txt", genome_name=genome_names),
+        input_kmer_count_files=expand(
+            "results/feature_engineering/kmer_counts/{nucl_kmer_length}mers/{genome_name}_{nucl_kmer_length}mers.txt", 
+            genome_name=genome_names,
+            nucl_kmer_length=config["parameters"]["nucl_kmer_length"]
+        ),
         kmer_concat_script="workflow/scripts/feature_engineering/concat_kmer_counts.py"
     output:
-        "data/all_kmer_counts.csv"
+        "results/all_{nucl_kmer_length}mer_counts.csv"
     log:
-        err="logs/concat_kmer_counts.err",
-        out="logs/concat_kmer_counts.out"
+        err="logs/concat_kmer_counts/{nucl_kmer_length}mers/{nucl_kmer_length}.err",
+        out="logs/concat_kmer_counts/{nucl_kmer_length}mers/{nucl_kmer_length}.out",
     params:
-        test="Please work"
+        kmer_length=config["parameters"]["nucl_kmer_length"]
     conda:
         "../envs/data_prep.yml"
     script:
         "../scripts/feature_engineering/concat_kmer_counts.py"
 
-# Combines kmer count information with phenotypic data
-rule combine_data_sets:
+# Creates fake features for the dataset
+rule create_fake_phenotype_data:
     input:
         all_kmer_counts="data/all_kmer_counts.csv",
-        phenotypic_data=config['phenotype']['phenotype_file']
     params:
         target_column=config['phenotype']['target_column'],
     output:

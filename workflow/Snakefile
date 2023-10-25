@@ -1,12 +1,21 @@
 include: "rules/common.smk"
 
+localrules: count_nucl_kmers, generate_snakemake_dag
+
 ####### Target rules #######
 rule all:
     input:
         "results/snakemake_dag.png",
-        "data/all_kmer_counts.csv",
-        expand("results/feature_engineering/kmer_counts/{genome_name}_5mers.txt", genome_name=genome_names),
-        "data/merged_data.csv"
+        expand(
+            "results/all_{nucl_kmer_length}mer_counts.csv",
+            nucl_kmer_length=config['parameters']["nucl_kmer_length"]
+        ),
+        expand(
+            "results/feature_engineering/kmer_counts/{nucl_kmer_length}mers/{genome_name}_{nucl_kmer_length}mers.txt", 
+            genome_name=genome_names,
+            nucl_kmer_length=config["parameters"]["nucl_kmer_length"]
+        ),
+        # "data/merged_data.csv",
         # "results/modeling/xgboost_gridsearch.pkl"
 
 
@@ -21,22 +30,12 @@ rule generate_snakemake_dag:
     shell:
         "snakemake --rulegraph | dot -Tpng > {output}"
 
-
-# Just a rule for testing out the config file
-rule config_values:
-    output:
-        "tester.txt"
-    log:
-        err="logs/count_kmers.err",
-        out="logs/count_kmers.out"
-    params:
-        genome_directory=config["data_prep"]["genome_directory"],
-        kmc_temp_dir=config["data_prep"]["kmc_temp_dir"]
-    run:
-        shell("echo 'Genome directory: {params.genome_directory}' > {output}")
-        with open(f"{params.kmc_temp_dir}/something", 'w') as fout:
-            for i, genome_name in enumerate(genome_names):
-                fout.write(f"{i + 1}\t{genome_name}\n")
+rule clean_all:
+    shell:
+        """
+        rm -rf logs/*
+        rm -rf .snakemake/log/*
+        """
 
 ####### Modules #######
 include: "rules/feature_engineering.smk"

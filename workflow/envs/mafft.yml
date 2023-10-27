@@ -1,0 +1,6 @@
+name: mafft
+channels:
+  - bioconda
+dependencies:
+  - mafft
+  

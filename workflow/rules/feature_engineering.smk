@@ -11,15 +11,18 @@ rule count_nucl_kmers:
         genome_directory=config["directories"]["genome_directory"],
         kmer_length=config["parameters"]["nucl_kmer_length"]
     log:
-        err="logs/count_nucl_kmers/{genome_name}/count_kmers_{genome_name}_{nucl_kmer_length}.err",
-        out="logs/count_nucl_kmers/{genome_name}/count_kmers_{genome_name}_{nucl_kmer_length}.out"
+        err="logs/count_nucl_kmers/{nucl_kmer_length}/{genome_name}/count_kmers_{genome_name}.err",
+        out="logs/count_nucl_kmers/{nucl_kmer_length}/{genome_name}/count_kmers_{genome_name}.out"
     conda:
         "../envs/kmc.yml"
+    resources:
+        mem_mb=12000
     shell:
         """
-        kmc -k{params.kmer_length} -fm {params.genome_directory}/{wildcards.genome_name} \
+        mkdir data/kmc_temp/{wildcards.genome_name}_{params.kmer_length}
+        kmc -k{params.kmer_length} -v -fm {params.genome_directory}/{wildcards.genome_name} \
             data/kmc_temp/{params.kmer_length}mers_{wildcards.genome_name} \
-            data/kmc_temp 1> {log.out} 2> {log.err}
+            data/kmc_temp/{wildcards.genome_name}_{params.kmer_length} 1> {log.out} 2> {log.err}
         kmc_tools transform data/kmc_temp/{params.kmer_length}mers_{wildcards.genome_name} \
             dump results/feature_engineering/kmer_counts/{params.kmer_length}mers/{wildcards.genome_name}_{params.kmer_length}mers.txt \
             1> {log.out} 2> {log.err}

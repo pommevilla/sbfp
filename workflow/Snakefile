@@ -40,3 +40,8 @@ rule clean_all:
 ####### Modules #######
 include: "rules/feature_engineering.smk"
 # include: "rules/modeling.smk"
+
+
+####### Cleanup #######
+onsuccess:
+    shell("rm -rf data/kmc_temp/*")

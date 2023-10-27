@@ -19,7 +19,7 @@ directories:
   kmc_temp_dir: data/kmc_temp
 
 parameters:
-  nucl_kmer_length: 10
+  nucl_kmer_length: 15
 
 # Length of AA k-mers
 # aa_kmer_length

@@ -14,12 +14,10 @@
 
 ## To Dos
 
-- [ ] Parameterize k for k-mer counting
+- [x] Parameterize k for k-mer counting
 - [ ] Add AA k-mer counting
 - [ ] Feature selection
-- [ ] Configure for slurm
+- [x] Configure for slurm
 - [ ] Update XGBoost version to avoid deprecation warnings
     - See: https://github.com/dmlc/xgboost/issues/9543
-- [ ] Phylogenetic tree building
-- [ ] Containerization
-- [ ] More instrutions on running the pipeline
+- [x] Phylogenetic tree building

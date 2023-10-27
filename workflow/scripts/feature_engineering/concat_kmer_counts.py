@@ -17,7 +17,7 @@ def pivot_and_rename_kmer_counts(kmer_count_file: str):
         kmer_count_file.removesuffix(f"_{snakemake.params.kmer_length}mers.txt")
     )
 
-    # Currently only doing the first 500 rows. Will remove this in production.
+    # Currently only doing the first 1000 rows. Will remove this in production.
     df = pd.read_csv(
         kmer_count_file, sep="\t", header=None, names=["kmer", "count"], nrows=1000
     )

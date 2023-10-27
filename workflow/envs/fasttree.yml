@@ -1,6 +1,6 @@
-name: mafft
+name: fasttree
 channels:
   - bioconda
 dependencies:
-  - mafft
+  - fasttree=2.1.11
   

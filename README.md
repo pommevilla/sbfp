@@ -14,10 +14,7 @@
 
 ## To Dos
 
-- [x] Parameterize k for k-mer counting
 - [ ] Add AA k-mer counting
 - [ ] Feature selection
-- [x] Configure for slurm
 - [ ] Update XGBoost version to avoid deprecation warnings
     - See: https://github.com/dmlc/xgboost/issues/9543
-- [x] Phylogenetic tree building

@@ -5,25 +5,39 @@ localrules: count_nucl_kmers, generate_snakemake_dag
 ####### Target rules #######
 rule all:
     input:
-        "results/snakemake_dag.png",
-        expand(
-            "results/all_{nucl_kmer_length}mer_counts.csv",
-            nucl_kmer_length=config['parameters']["nucl_kmer_length"]
-        ),
+        # Workflow DAG
+        "snakemake_dag.png",
+
+        # Individual kmer counts for each genome
         expand(
             "results/feature_engineering/kmer_counts/{nucl_kmer_length}mers/{genome_name}_{nucl_kmer_length}mers.txt", 
-            genome_name=genome_names,
-            nucl_kmer_length=config["parameters"]["nucl_kmer_length"]
+            nucl_kmer_length=NUCL_KMER_LENGTH,
+            genome_name=GENOME_NAMES,
         ),
+
+        # kmer count matrix for all genomes
+        f"results/all_{NUCL_KMER_LENGTH}mer_counts.csv",
+
+        # kmer distribution plots plots
+        # expand(
+        #     "results/plots/{nucl_kmer_length}_mer{trans}.png",
+        #     nucl_kmer_length=NUCL_KMER_LENGTH,
+        #     trans=["", "_logged"]
+        # ),
         # "data/merged_data.csv",
         # "results/modeling/xgboost_gridsearch.pkl"
+
+        "outputs/all.fasta"
+
+        # BLAST DB
+        # "outputs/db/sbfpDB"
 
 
 ####### Meta rules #######
 rule generate_snakemake_dag:
     input:
     output:
-        "results/snakemake_dag.png"
+        "snakemake_dag.png"
     log:
         err = "logs/snakemake_dag.err",
         out = "logs/snakemake_dag.out"
@@ -39,7 +53,9 @@ rule clean_all:
 
 ####### Modules #######
 include: "rules/feature_engineering.smk"
+# include: "rules/eda.smk"
 # include: "rules/modeling.smk"
+include: "rules/phylogenetics.smk"
 
 
 ####### Cleanup #######

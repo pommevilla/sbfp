@@ -18,3 +18,5 @@
 - [ ] Feature selection
 - [ ] Update XGBoost version to avoid deprecation warnings
     - See: https://github.com/dmlc/xgboost/issues/9543
+- [ ] Add tree building to pipeline
+- [ ] Add gene targets for phylogenetics to config values

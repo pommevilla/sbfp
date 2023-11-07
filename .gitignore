@@ -65,3 +65,5 @@ results/feature_engineering/kmer_counts
 data/all_kmer_counts.csv
 data/merged_data.csv
 
+# blastDB files
+outputs/db

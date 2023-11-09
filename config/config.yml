@@ -12,15 +12,24 @@ phenotype:
 
 
 directories:
-  # Directory containing the genome files of interest
+  # genome_directory: Directory containing the genome files of interest
   # The pipeline will look for files ending in fa, fna, fasta, and fastq inside this directory
   # genome_directory: /project/fsepru/paul.villanueva/repos/snakemake-genome-assembly-practice/output/genomes
-  genome_directory: data/genomes
-  # Where intermediate kmc files are stored.
+
+  # Full directory
+  # genome_directory: data/genomes
+
+  # Smaller testing directory
+  genome_directory: data/short_genomes
+  
+  # Where intermediate files are stored.
+  working_dir: working
   kmc_temp_dir: data/kmc_temp
 
 parameters:
   nucl_kmer_length: 15
+  aa_kmer_lengths: [3, 4, 5]
+
 
 # Length of AA k-mers
 # aa_kmer_length

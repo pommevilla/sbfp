@@ -8,12 +8,26 @@ rule all:
         # Workflow DAG
         "snakemake_dag.png",
 
-        # Individual kmer counts for each genome
+        # Individual nucl kmer counts for each genome
         expand(
             "results/feature_engineering/kmer_counts/{nucl_kmer_length}mers/{genome_name}_{nucl_kmer_length}mers.txt", 
             nucl_kmer_length=NUCL_KMER_LENGTH,
             genome_name=GENOME_NAMES,
         ),
+
+        # Find orfs for aa counting
+        expand(
+            "working/orfs/{genome_name}/{genome_name}.faa",
+            genome_name=GENOME_NAMES
+
+        ),
+
+        # Individual aa kmer counts for each genome
+        # expand(
+        #     "results/feature_engineering/kmers/aa/{aa_kmer_length}mers/{genome_name}/combined_prod.tsv",
+        #     aa_kmer_length=AA_KMER_LENGTHS,
+        #     genome_name=GENOME_NAMES,
+        # ),
 
         # kmer count matrix for all genomes
         f"results/all_{NUCL_KMER_LENGTH}mer_counts.csv",

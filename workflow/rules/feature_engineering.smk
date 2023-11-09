@@ -29,11 +29,11 @@ rule count_nucl_kmers:
         """
         
 # Concatenates all the kmer count files generated above
-rule concat_kmer_counts:
+rule concat_nucl_kmer_counts:
     input:
         input_kmer_count_files=expand(
-            "results/feature_engineering/kmer_counts/{nucl_kmer_length}mers/{genome_name}_{nucl_kmer_length}mers.txt", 
-            genome_name=genome_names,
+            "results/feature_engineering/kmers/aa/{nucl_kmer_length}mers/{genome_name}_{nucl_kmer_length}mers.txt", 
+            genome_name=GENOME_NAMES,
             nucl_kmer_length=config["parameters"]["nucl_kmer_length"]
         ),
         kmer_concat_script="workflow/scripts/feature_engineering/concat_kmer_counts.py"
@@ -48,6 +48,52 @@ rule concat_kmer_counts:
         "../envs/data_prep.yml"
     script:
         "../scripts/feature_engineering/concat_kmer_counts.py"
+
+# Find orfs for AA counting
+rule find_orfs:
+    output:
+        "working/orfs/{genome_name}/{genome_name}.faa"
+    log:
+        err="logs/find_orfs/{genome_name}/find_orfs.err",
+        out="logs/find_orfs/{genome_name}/find_orfs.out"
+    conda:
+        "../envs/orfipy.yml"
+    params:
+        outdir=lambda wildcards, output: os.path.dirname(output[0]),
+        outfile=lambda wildcards, output: os.path.basename(output[0]),
+        genome_directory=config["directories"]["genome_directory"]
+    shell:
+        """
+        orfipy {params.genome_directory}/{wildcards.genome_name} \
+            --outdir {params.outdir} \
+            --pep {params.outfile} \
+            1> {log.out} 2> {log.err}
+        """
+
+# rule count_aa_kmers:
+#     output:
+#         "results/feature_engineering/kmers/aa/{aa_kmer_length}mers/{genome_name}/combined_prod.tsv"
+#     params:
+#         genome_directory=config["directories"]["genome_directory"],
+#         output_dir=lambda w, output: os.path.dirname(output[0]),
+#     log:
+#         err="logs/count_aa_kmers/{aa_kmer_length}/{genome_name}/count_aa_kmers_{genome_name}.err",
+#         out="logs/count_aa_kmers/{aa_kmer_length}/{genome_name}/count_aa_kmers_{genome_name}.out"
+#     conda:
+#         "../envs/mercat2.yml"
+#     threads: 16
+#     resources:
+#         mem_mb=30000
+#     shell:
+#         """
+#         mercat2.py -i {params.genome_directory}/{wildcards.genome_name} \
+#             -k {wildcards.aa_kmer_length} \
+#             -n {threads} \
+#             -prod \
+#             -skipclean \
+#             -o {params.output_dir} \
+#             1> {log.err} 2> {log.out}
+#         """ 
 
 # Creates fake features for the dataset
 rule create_fake_phenotype_data:

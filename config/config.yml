@@ -17,19 +17,21 @@ directories:
   # genome_directory: /project/fsepru/paul.villanueva/repos/snakemake-genome-assembly-practice/output/genomes
 
   # Full directory
-  # genome_directory: data/genomes
+  genome_directory: data/genomes
 
   # Smaller testing directory
-  genome_directory: data/short_genomes
+  # genome_directory: data/short_genomes
   
   # Where intermediate files are stored.
   working_dir: working
-  kmc_temp_dir: data/kmc_temp
+
+  # Will be a subfolder of the working directory
+  kmc_temp_dir: working/kmc_temp
+
+  gene_target_dir: data/gene_targets
 
 parameters:
   nucl_kmer_length: 15
-  aa_kmer_lengths: [3, 4, 5]
+  aa_kmer_lengths: [3, 4, 5, 10, 11]
 
 
-# Length of AA k-mers
-# aa_kmer_length

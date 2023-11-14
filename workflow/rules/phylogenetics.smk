@@ -9,7 +9,7 @@ rule prepare_db_fasta:
     input:
         genome_files
     output:
-        "outputs/all.fasta"
+        "working/all.fasta"
     log:
         out="logs/prepare_db_fasta/prepare_db_fasta.out",
         err="logs/prepare_db_fasta/prepare_db_fasta.err"

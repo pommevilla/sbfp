@@ -60,6 +60,7 @@ data/genomes
 kmc_temp
 data/
 results/feature_engineering/kmer_counts
+working
 
 # Rule outputs
 data/all_kmer_counts.csv
@@ -67,3 +68,6 @@ data/merged_data.csv
 
 # blastDB files
 outputs/db
+
+# aa kmer count outputs
+results/feature_engineering/kmers/aa/*

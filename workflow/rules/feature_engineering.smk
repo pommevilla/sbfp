@@ -70,30 +70,32 @@ rule find_orfs:
             1> {log.out} 2> {log.err}
         """
 
-# rule count_aa_kmers:
-#     output:
-#         "results/feature_engineering/kmers/aa/{aa_kmer_length}mers/{genome_name}/combined_prod.tsv"
-#     params:
-#         genome_directory=config["directories"]["genome_directory"],
-#         output_dir=lambda w, output: os.path.dirname(output[0]),
-#     log:
-#         err="logs/count_aa_kmers/{aa_kmer_length}/{genome_name}/count_aa_kmers_{genome_name}.err",
-#         out="logs/count_aa_kmers/{aa_kmer_length}/{genome_name}/count_aa_kmers_{genome_name}.out"
-#     conda:
-#         "../envs/mercat2.yml"
-#     threads: 16
-#     resources:
-#         mem_mb=30000
-#     shell:
-#         """
-#         mercat2.py -i {params.genome_directory}/{wildcards.genome_name} \
-#             -k {wildcards.aa_kmer_length} \
-#             -n {threads} \
-#             -prod \
-#             -skipclean \
-#             -o {params.output_dir} \
-#             1> {log.err} 2> {log.out}
-#         """ 
+rule count_aa_kmers:
+    output:
+        "results/feature_engineering/kmers/aa/{aa_kmer_length}mers/combined_prod.tsv"
+    params:
+        genome_directory=config["directories"]["genome_directory"],
+        output_dir=lambda wildcards, output: os.path.dirname(output[0]),
+        min_count=determine_mercat_min_count
+    log:
+        err="logs/count_aa_kmers/{aa_kmer_length}/count_aa_{aa_kmer_length}mers.err",
+        out="logs/count_aa_kmers/{aa_kmer_length}/count_aa_{aa_kmer_length}mers.out"
+    conda:
+        "../envs/mercat2.yml"
+    threads: determine_mercat_threads
+    resources:
+        mem_mb=48000
+    shell:
+        """
+        mercat2.py -f {params.genome_directory} \
+            -k {wildcards.aa_kmer_length} \
+            -n {threads} \
+            -c {params.min_count} \
+            -prod \
+            -skipclean \
+            -o {params.output_dir} \
+            1> {log.err} 2> {log.out}
+        """ 
 
 # Creates fake features for the dataset
 rule create_fake_phenotype_data:

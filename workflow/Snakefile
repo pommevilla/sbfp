@@ -22,12 +22,10 @@ rule all:
 
         ),
 
-        # Individual aa kmer counts for each genome
-        # expand(
-        #     "results/feature_engineering/kmers/aa/{aa_kmer_length}mers/{genome_name}/combined_prod.tsv",
-        #     aa_kmer_length=AA_KMER_LENGTHS,
-        #     genome_name=GENOME_NAMES,
-        # ),
+        expand(
+            "results/feature_engineering/kmers/aa/{aa_kmer_length}mers/combined_prod.tsv",
+            aa_kmer_length=AA_KMER_LENGTHS,
+        ),
 
         # kmer count matrix for all genomes
         f"results/all_{NUCL_KMER_LENGTH}mer_counts.csv",
@@ -41,10 +39,10 @@ rule all:
         # "data/merged_data.csv",
         # "results/modeling/xgboost_gridsearch.pkl"
 
-        "outputs/all.fasta"
+        f"working/all.fasta",
 
         # BLAST DB
-        # "outputs/db/sbfpDB"
+        expand("outputs/db/sbfpDB.{db_type}", db_type=BLAST_DB_SUFFIXES),
 
 
 ####### Meta rules #######

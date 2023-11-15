@@ -97,6 +97,21 @@ rule count_aa_kmers:
             1> {log.err} 2> {log.out}
         """ 
 
+rule transpose_aa_kmers:
+    input:
+        script="workflow/scripts/feature_engineering/transpose.awk",
+        aa_kmer_counts="results/feature_engineering/kmers/aa/{aa_kmer_length}mers/combined_prod.tsv"
+    output:
+        "results/feature_engineering/kmers/aa/aa_{aa_kmer_length}mers.tsv"
+    log:
+        err="logs/transpose_aa_kmers/transpose_{aa_kmer_length}mers.err",
+        out="logs/transpose_aa_kmers/transpose_{aa_kmer_length}mers.out"
+    shell:
+        """
+        awk -f {input.script} {input.aa_kmer_counts} > {output}
+        """
+
+
 # Creates fake features for the dataset
 rule create_fake_phenotype_data:
     input:

@@ -19,12 +19,18 @@ rule all:
         expand(
             "working/orfs/{genome_name}/{genome_name}.faa",
             genome_name=GENOME_NAMES
-
         ),
 
+        # Get raw aa kmer counts
         expand(
             "results/feature_engineering/kmers/aa/{aa_kmer_length}mers/combined_prod.tsv",
             aa_kmer_length=AA_KMER_LENGTHS,
+        ),
+
+        # Transposed aa kmer counts
+        expand(
+            "results/feature_engineering/kmers/aa/aa_{aa_kmer_length}mers.tsv",
+            aa_kmer_length=AA_KMER_LENGTHS
         ),
 
         # kmer count matrix for all genomes
